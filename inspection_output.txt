@@ -1,0 +1,318 @@
+
+=========================================
+DOSYA: Araç_Kapasite_Maliyet.xlsx
+=========================================
+Sayfa İsimleri: ['Sayfa1']
+  Sayfa: Sayfa1
+    Boyut: 5 satır x 6 sütun
+    Başlıklar (Sütun İsimleri): ['Araç Adı', 'Kapasite (desi)', 'Kiralık Araç Günlük Kira (TL)', 'Kiralık Araç Kilometre Başına Maliyet (TL)', 'Spot Araç Sabit Günlük Maliyet (TL)', 'Spot Kilometre Başına Maliyet (TL)']
+    Örnek Satırlar:
+      Satır 1: ['Tır', 22400, 7000, 13, 11700, 25]
+      Satır 2: ['Kamyon', 12000, 5000, 10, 7638, 21]
+      Satır 3: ['Hafif Kamyon', 7200, 5000, 10, 8750, 20]
+      Satır 4: ['Kamyonet', 5600, 3750, 6, 4750, 18]
+    Tüm Satırlar:
+      ['Tır', 22400, 7000, 13, 11700, 25]
+      ['Kamyon', 12000, 5000, 10, 7638, 21]
+      ['Hafif Kamyon', 7200, 5000, 10, 8750, 20]
+      ['Kamyonet', 5600, 3750, 6, 4750, 18]
+
+=========================================
+DOSYA: Desi_talep.xlsx
+=========================================
+Sayfa İsimleri: ['Sheet1']
+  Sayfa: Sheet1
+    Boyut: 10771 satır x 4 sütun
+    Başlıklar (Sütun İsimleri): ['Çıkış Transfer Merkezi', 'Varış Transfer Merkezi', 'Tarih', 'Toplam Desi']
+    Örnek Satırlar:
+      Satır 1: ['Mersin', 'Eskişehir', 46023, 379.5]
+      Satır 2: ['Kocaeli', 'Şanlıurfa', 46023, 1239.48]
+      Satır 3: ['Kocaeli', 'Tekirdağ', 46023, 2852.7]
+      Satır 4: ['Sivas', 'Eskişehir', 46023, 638.6]
+      Satır 5: ['Kocaeli', 'Sivas', 46023, 1001.6]
+      Satır 6: ['Tekirdağ', 'Manisa', 46023, 2434.32]
+      Satır 7: ['Tekirdağ', 'Denizli', 46023, 552.72]
+      Satır 8: ['Kocaeli', 'Erzincan', 46023, 1370]
+      Satır 9: ['Kocaeli', 'Manisa', 46023, 1257.36]
+      Satır 10: ['Eskişehir', 'Mersin', 46023, 260.96]
+
+=========================================
+DOSYA: EDA_Temiz_Veri.xlsx
+=========================================
+Sayfa İsimleri: ['Temizlenmis_Veri', 'Mesafe_Matrisi_km', 'Aykiri_Deger_Raporu', 'Flag_Referans']
+  Sayfa: Temizlenmis_Veri
+    Boyut: 10772 satır x 29 sütun
+    Başlıklar (Sütun İsimleri): [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+    Örnek Satırlar:
+      Satır 1: [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+      Satır 2: [None, None, None, 327.36, 243.6, 3, None, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, -1.66, 0, None, None, None, None]
+      Satır 3: [None, None, None, 374, 293.9, 3, None, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, -1.79, 0, None, None, None, None]
+      Satır 4: [None, None, None, 974.28, 157.2, 3, None, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, -1.77, 0, None, None, None, None]
+      Satır 5: [None, None, None, 349.44, 196.5, 3, None, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, -1.8, 0, None, None, None, None]
+      Satır 6: [None, None, None, 694, 230.7, 3, None, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, -1.72, 0, None, None, None, None]
+      Satır 7: [None, None, None, 187.32, 80.7, 3, None, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, -1.86, 0, None, None, None, None]
+      Satır 8: [None, None, None, 95.6, 360.8, 3, None, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, -1.97, 0, None, None, None, None]
+      Satır 9: [None, None, None, 390.26, 293.9, 3, None, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, -1.59, 0, None, None, None, None]
+      Satır 10: [None, None, None, 220.58, 80.7, 3, None, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, -1.73, 0, None, None, None, None]
+  Sayfa: Mesafe_Matrisi_km
+    Boyut: 20 satır x 19 sütun
+    Başlıklar (Sütun İsimleri): [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+    Örnek Satırlar:
+      Satır 1: [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+      Satır 2: [None, 0, 243.6, 302.7, 1291.3, 293.9, 406.3, 703, 278.7, 236.6, 157.2, 1490.1, 869.8, 1015.7, 196.5, 210.6, 503.2, 230.7, 1286.7]
+      Satır 3: [None, 243.6, 0, 357.5, 1056.1, 80.7, 350.9, 565.1, 89, 106.1, 360.8, 1277.8, 715.3, 782, 296.2, 106.6, 274.3, 165.7, 1084.6]
+      Satır 4: [None, 302.7, 357.5, 0, 1207.1, 331.2, 168, 483, 442.5, 257.8, 224.2, 1334.6, 653.2, 937.9, 495.1, 415.9, 611.6, 467.3, 1117.2]
+      Satır 5: [None, 1291.3, 1056.1, 1207.1, 0, 997.4, 1047.6, 801.2, 1064.1, 1060.8, 1361.3, 377.4, 697.6, 275.9, 1331.2, 1136.7, 880.1, 1172, 382.9]
+      Satır 6: [None, 293.9, 80.7, 331.2, 997.4, 0, 290.9, 485, 156.6, 79.3, 384.6, 1206.1, 634.6, 721.8, 374.1, 187.3, 280.4, 246, 1009.7]
+      Satır 7: [None, 406.3, 350.9, 168, 1047.6, 290.9, 0, 318.1, 439.2, 247.4, 376.2, 1166.6, 489.1, 782.5, 575.7, 441.4, 551.3, 500.9, 949.2]
+      Satır 8: [None, 703, 565.1, 483, 801.2, 485, 318.1, 0, 636.9, 490.3, 693.5, 862.5, 171, 567.5, 844.5, 671.3, 639.1, 730.7, 641.3]
+      Satır 9: [None, 278.7, 89, 442.5, 1064.1, 156.6, 439.2, 636.9, 0, 195, 417.5, 1307.9, 779.6, 794.2, 267.3, 75.7, 225.7, 110.9, 1122.9]
+      Satır 10: [None, 236.6, 106.1, 257.8, 1060.8, 79.3, 247.4, 490.3, 195, 0, 309.2, 1253.6, 650.1, 785, 354.1, 195.1, 356.1, 255.4, 1051.4]
+  Sayfa: Aykiri_Deger_Raporu
+    Boyut: 21 satır x 8 sütun
+    Başlıklar (Sütun İsimleri): [None, None, None, None, None, None, None, None]
+    Örnek Satırlar:
+      Satır 1: [None, None, None, None, None, None, None, None]
+      Satır 2: [None, None, None, None, None, None, None, None]
+      Satır 3: [None, None, None, None, None, None, None, None]
+      Satır 4: [None, None, None, None, None, None, None, None]
+      Satır 5: [None, None, None, None, None, None, None, None]
+      Satır 6: [None, None, None, None, None, None, None, None]
+      Satır 7: [None, None, None, None, None, None, None, None]
+      Satır 8: [None, None, None, None, None, None, None, None]
+      Satır 9: [None, None, None, None, None, None, None, None]
+      Satır 10: [None, None, None, None, None, None, None, None]
+  Sayfa: Flag_Referans
+    Boyut: 18 satır x 6 sütun
+    Başlıklar (Sütun İsimleri): [None, None, None, None, None, None]
+    Örnek Satırlar:
+      Satır 1: [None, None, None, None, None, None]
+      Satır 2: [None, None, None, None, None, None]
+      Satır 3: [None, None, None, None, None, None]
+      Satır 4: [None, None, None, None, None, None]
+      Satır 5: [None, None, None, None, None, None]
+      Satır 6: [None, None, None, None, None, None]
+      Satır 7: [None, None, None, None, None, None]
+      Satır 8: [None, None, None, None, None, None]
+      Satır 9: [None, None, None, None, None, None]
+      Satır 10: [None, None, None, None, None, None]
+
+=========================================
+DOSYA: Kiralık_Araçlar.xlsx
+=========================================
+Sayfa İsimleri: ['Sayfa1']
+  Sayfa: Sayfa1
+    Boyut: 13 satır x 4 sütun
+    Başlıklar (Sütun İsimleri): ['Çıkış Transfer Merkezi', 'Varış Transfer Merkezi', 'Araç sayısı', 'Araç Türü']
+    Örnek Satırlar:
+      Satır 1: ['İstanbul', 'Yalova', 2, 'Tır']
+      Satır 2: ['İstanbul', 'Eskişehir', 2, 'Tır']
+      Satır 3: ['Kocaeli', 'Yalova', 1, 'Tır']
+      Satır 4: ['İstanbul', 'Manisa', 1, 'Tır']
+      Satır 5: ['İstanbul', 'Balıkesir', 1, 'Tır']
+      Satır 6: ['İstanbul', 'Tekirdağ', 1, 'Tır']
+      Satır 7: ['Kocaeli', 'İstanbul', 1, 'Tır']
+      Satır 8: ['Kocaeli', 'Tekirdağ', 1, 'Tır']
+      Satır 9: ['Yalova', 'Eskişehir', 1, 'Kamyon']
+      Satır 10: ['Kocaeli', 'Balıkesir', 1, 'Kamyon']
+    Tüm Satırlar:
+      ['İstanbul', 'Yalova', 2, 'Tır']
+      ['İstanbul', 'Eskişehir', 2, 'Tır']
+      ['Kocaeli', 'Yalova', 1, 'Tır']
+      ['İstanbul', 'Manisa', 1, 'Tır']
+      ['İstanbul', 'Balıkesir', 1, 'Tır']
+      ['İstanbul', 'Tekirdağ', 1, 'Tır']
+      ['Kocaeli', 'İstanbul', 1, 'Tır']
+      ['Kocaeli', 'Tekirdağ', 1, 'Tır']
+      ['Yalova', 'Eskişehir', 1, 'Kamyon']
+      ['Kocaeli', 'Balıkesir', 1, 'Kamyon']
+      ['Kocaeli', 'Eskişehir', 1, 'Kamyon']
+      ['Yalova', 'Tekirdağ', 1, 'Kamyon']
+
+=========================================
+DOSYA: Koordinatlar.xlsx
+=========================================
+Sayfa İsimleri: ['Sheet1']
+  Sayfa: Sheet1
+    Boyut: 18 satır x 3 sütun
+    Başlıklar (Sütun İsimleri): ['Transfer Merkezi', 'Enlem', 'Boylam']
+    Örnek Satırlar:
+      Satır 1: ['Eskişehir', 39.7767, 30.5206]
+      Satır 2: ['Manisa', 38.6191, 27.4289]
+      Satır 3: ['Mersin', 36.8, 34.6333]
+      Satır 4: ['Kütahya', 39.4167, 29.9833]
+      Satır 5: ['Isparta', 37.7648, 30.5566]
+      Satır 6: ['İstanbul', 41.0082, 28.9784]
+      Satır 7: ['Bilecik', 40.1506, 29.9792]
+      Satır 8: ['Balıkesir', 39.6484, 27.8826]
+      Satır 9: ['Mardin', 37.3212, 40.7245]
+      Satır 10: ['Erzincan', 39.75, 39.5]
+    Tüm Satırlar:
+      ['Eskişehir', 39.7767, 30.5206]
+      ['Manisa', 38.6191, 27.4289]
+      ['Mersin', 36.8, 34.6333]
+      ['Kütahya', 39.4167, 29.9833]
+      ['Isparta', 37.7648, 30.5566]
+      ['İstanbul', 41.0082, 28.9784]
+      ['Bilecik', 40.1506, 29.9792]
+      ['Balıkesir', 39.6484, 27.8826]
+      ['Mardin', 37.3212, 40.7245]
+      ['Erzincan', 39.75, 39.5]
+      ['Şanlıurfa', 37.1591, 38.7969]
+      ['Tekirdağ', 40.9781, 27.5115]
+      ['Sivas', 39.7477, 37.0179]
+      ['Yalova', 40.65, 29.2667]
+      ['Zonguldak', 41.4564, 31.7987]
+      ['Karaman', 37.1759, 33.2287]
+      ['Denizli', 37.7765, 29.0864]
+
+=========================================
+DOSYA: Teknofest_Rapor_Gelismis.docx
+=========================================
+Bulunan paragraf sayısı: 145
+Belge İçeriği (Tamamı):
+[1] TEKNOFEST 2025
+[2] Yapay Zeka Destekli Lojistik Anahat Optimizasyonu
+[3] Ön Değerlendirme Raporu
+[4] Sponsor: Hepsiburada / Hepsijet
+[5] Taha Yasin ERTÜRK  •  Hasan DEMİR  •  Emirhan AÇIK
+[6] Nisan 2025
+[7] Bölüm 1: Literatür Taraması ve Yaklaşım
+[8] Hepsijet’in anahat operasyonu; heterojen filo yönetimi (kiralık + spot araçlar), kısıtlı transfer merkezi (TM) kapasiteleri ve dinamik talep dalgalanmaları altında maliyet minimizasyonu gerektirmektedir. Bu yapı, literatürde salt bir Araç Rotalama Problemi (VRP) olarak değil; Kapasite Kısıtlı Hizmet Ağı Tasarımı (Capacitated Service Network Design – CSND) ve Dış Kaynak Dengeli Heterojen Filo Yönetimi (Make-or-Buy VRP) çerçevesinde ele alınmalıdır. Çözüm mimarimizi şekillendiren beş kritik çalışma aşağıda özetlenmektedir.
+[9] 1
+[10] Crainic, T.G. (2000) — Service Network Design in Freight Transportation (European Journal of Operational Research, 122(2), 272–288)
+[11] Yük taşımacılığı ağlarında akış konsolidasyonu, araç ataması ve ağ konfigürasyonunu sistematik biçimde sınıflandıran bu derleme, TM’ler arası konsolidasyon fırsatlarını ve sabit/değişken maliyet yapısını modelleyeceğimiz CSND çerçevesinin kavramsal iskeletini oluşturmaktadır.
+[12] 2
+[13] Koç, Ç., Bektaş, T., Jabali, O. & Laporte, G. (2016) — Thirty Years of Heterogeneous Vehicle Routing (European Journal of Operational Research, 249(1), 1–21)
+[14] Tır, kamyon, hafif kamyon ve kamyonet gibi dört farklı araç tipini eşzamanlı yöneten modelimizin temel altyapısı bu derlemeden beslenmektedir. Sabit maliyetli kiralık araçlar ile yüksek maliyetli spot araçlar arasındaki optimal dengenin (make-or-buy kararı) matematiksel formülas-yonuna rehberlik etmektedir.
+[15] 3
+[16] Pillac, V., Gendreau, M., Guéret, C. & Medaglia, A.L. (2013) — A Review of Dynamic Vehicle Routing Problems (European Journal of Operational Research, 225(1), 1–11)
+[17] Gün içi talep güncellemelerine karşı araç atamalarının nasıl dinamik olarak yeniden optimize edile-ceğini modellemede temel referansımızdır. Spot araç çağırma kararlarının reaktif değil proaktif alınabilmesi için kullanacağımız kayan ufuk (rolling horizon) yaklaşımının teorik zeminini oluşturmaktadır.
+[18] 4
+[19] Lim, B. vd. (2021) — Temporal Fusion Transformers for Interpretable Multi-Horizon Time Series Forecasting (International Journal of Forecasting, 37(4), 1748–1764)
+[20] Günlük desi/hacim tahminleri için TFT mimarisi; tarihsel örüntüleri, gün içi anlık verileri ve takvim değişkenlerini (bayram, sezon vb.) birlikte modelleyerek erken araç planlamamızı mümkün kılacaktır.
+[21] 5
+[22] Elmachtoub, A.N. & Grigas, P. (2022) — Smart Predict, then Optimize (Management Science, 68(1), 9–26)
+[23] Klasik iki aşamalı yaklaşımlarda tahmin hatası doğrudan operasyonel maliyete yansır. SPO çerçevesi, tahmin modelini doğrudan optimizasyon kayıp fonksiyonuna göre eğiterek bu kopukluğu gidermekte; uçtan uca entegrasyon vizyonumuzun teorik daya-nağını oluşturmaktadır.
+[24] Genel Yaklaşım Özeti
+[25] Beş referans birlikte değerlendirildiğinde mimarimizin mantığı şu şekilde kristalleşmektedir: Crainic (2000) ağ tasarım iskeletini, Koç vd. (2016) heterojen filo formülas-yonunu, Pillac vd. (2013) dinamik yeniden optimizasyonu, Lim vd. (2021) çok ufuklu talep tahminini ve Elmachtoub & Grigas (2022) tahmin–optimizasyon entegrasyonunu sağlar. Bu beş bileşen Bölüm 3’te detaylandırılan dört katmanlı mimariyi oluşturur.
+[26] Bölüm 2: Problemin Tanımı ve Formülas-yonu
+[27] Hepsijet’in günlük linehaul operasyonu, heterojen araç filosu ve kısıtlı TM kapasiteleri nedeniyle klasik bir Araç Rotalama Problemi’nin ötesine geçmektedir. Aşağıda bu problemin matematiksel formülünü, karar değişkenlerini ve kısıtlarını sistematik biçimde tanımlamaktayız.
+[28] 2.1 Sistem Amaç Fonksiyonu — Toplam Maliyet Minimizasyonu
+[29] Sistemin temel amacı, günlük değişenlik gösteren paket hacmini (desi), belirlenen kısıtlar altında en düşük maliyetle hedeflenen transfer merkezlerine ulaştırmaktır. Amaç fonksiyonu üç ana maliyet kaleminin toplamından oluşur:
+[30] Sabit Kiralık Araç Maliyeti: Sözleşmeli olarak sistemde bulunan araçların, doluluk oranından bağımsız olarak ödenen sabit maliyetleri.
+[31] Spot Araç Tedarik Maliyeti: Talebin kiralık araç kapasitesini aştığı durumlarda dışarıdan çağırılan, genellikle daha yüksek birim maliyete sahip araçların toplam ücreti.
+[32] Elleçleme ve Konsolidasyon Maliyetleri: Paketlerin Transfer Merkezlerinde (TM) indirilmesi, gruplanması ve tekrar yük-lenmesi sırasında oluşan operasyonel maliyetler.
+[33] Stratejik Odak: Model, sabit maliyeti ödenmiş kiralık araçların doluluk oranını (utilization) maksimize ederken, spot araç kullanımını yalnızca kapasitesi yetersiz kalan anlarda ve en verimli biçimde devreye almayı hedefler.
+[34] Utilization = Kullanılan Kapasite / Toplam Kapasite
+[35] 2.2 Temel Karar Değişkenleri
+[36] Optimizasyon modelinde karar değişkenleri, algoritmanın maliyet minimizasyonu ve kısıt sağlaması için kontrol ettiği ve değerini belirlediği temel unsurlardır:
+[37] Araç Atama Kararları (Kiralık Araçlar): Sabit maliyetli kiralık araçların hangi rotaya atanacağı kararı. Bu, tüm model içinde en kritik karar noktalarından birini oluşturur.
+[38] Spot Araç Tedarik Kararları: Kiralık araçların yetmediği durumda dışarıdan alınacak takviye miktarı kararı.
+[39] Yük Atama ve Akış Kararları (Desi Dağılımı): Hangi paketin hangi araca konulacağı kararı.
+[40] Konsolidasyon ve Rotalama Kararları: Yükün doğrudan mı yoksa başka bir TM üzerinden mi gideceği kararı.
+[41] 2.3 Matematiksel ve Operasyonel Kısıtlar
+[42] Matematiksel Kısıtlar
+[43] Talep Karşılama Kısıtı
+[44] Her rota için beklenen toplam desi mutlaka araçlara atanmalıdır. Hiçbir paket Transfer Merkezi’nde bırakılamaz.
+[45] Araç Kapasite Kısıtı
+[46] Bir araca yüklenen toplam desi, o aracın (Tır, Kamyon, Hafif Kamyon, Kamyonet) maksimum taşıma kapasitesini hiçbir koşulda aşamaz.
+[47] Akış Korunumu (Flow Conservation)
+[48] Bir TM konsolidasyon noktası olarak kullanılıyorsa, o merkeze giren toplam paket sayısı ile çıkan sayı birbirine eşit olmalıdır (kaybolma veya türeme mevcut değildir).
+[49] Kiralık Araç Mevcudiyeti
+[50] Kullanılan toplam kiralık araç sayısı, envanterdeki mevcut (sözleşmeli) araç sayısından fazla olamaz.
+[51] Operasyonel Kısıtlar
+[52] TM Yanaşma / Erişilebilirlik
+[53] Bazı TM’lerin fiziksel yapısı gereği Tır tipi araçların yanaşması mümkün değildir; ilgili rotalarda yalnızca kamyon veya daha küçük araç tipleri kullanılabilir.
+[54] TM Elleçleme Kapasitesi
+[55] Her TM’nin günlük maksimum elleçleme desi limiti vardır; operasyon planı bu darboğaz (bottleneck) noktasını aşmamalıdır.
+[56] Araç–Yol Uyumu
+[57] Belirli rotalarda (şehir içi kısıtlı bölgeler vb.) yalnızca belirli araç tiplerine (kamyonet vb.) izin verilir.
+[58] Zaman Pencereleri (Time Windows)
+[59] Middle mile araçlarının TM’lerden çıkış ve varış saatleri, last mile (son teslimat) sürecini geciktirmeyecek şekilde planlanmalıdır.
+[60] Bölüm 3: Sistem Mimarisi ve Teknoloji
+[61] Geliştireceğimiz çözüm, dört katmanlı bir mimari üzerine inşa edilmiştir: (1) Veri katmanı, (2) Talep tahmin katmanı (ML), (3) Optimizasyon katmanı ve (4) Çıktı & API katmanı. Bu bölümde ML ve optimizasyon boyutları detaylı olarak açıklanmakta, ardından kullanılacak teknoloji yığını verilmektedir. Tüm katmanları birbirine bağlayan akış şeması rapor eklerinde sunulmuştur.
+[62] 3.1 Makine Öğrenmesi Boyutu — Talep Tahmin Katmanı
+[63] Talep tahmin katmanımız, yorumlanabilirliği ve operasyonel denetlenebilirliği ön planda tutan iki aşamalı bir mimari üzerine kurulmuştur.
+[64] Temel Model — LightGBM
+[65] Bu aşamada bir gradient boosting modeli konulandırıyoruz. Giriş özellikleri; geçmiş desi serileri (t-1, t-7, t-14 gecikmeli değerler), haftanın günü, ay, resmi tatil/kampanya bayrağı ve rota bazlı mevsimsel indekslerdir. Model, hem hızlı yeniden eğitim süresi sayesinde operasyon ekibince kolayca güncellenebilmesi hem de yeni rotalar için cold-start sorununu hafifletmesi nedeniyle temel referans noktasımızı oluşturmaktadır.
+[66] İleri Düzey Model — Temporal Fusion Transformer (TFT)
+[67] Lim vd. (2021)’in TFT mimarisini devreye alıyoruz. TFT, yalnızca “yarınki” talebi değil 3–5 günlük bir ufku aynı anda tahmin ederek spot araç rezervasyonlarının proaktif yapılmasını mümkün kılar. Attention mekanizması, hangi geçmiş güne veya özelliğe ağırlık verildiğini görselleştirerek operasyon müdürünün model kararını denetlemesine olanak tanır. Rota mesafesi ve TM elleçleme kapasitesi gibi sabit kovaryantlar ile anlık sipariş hacmi gibi dinamik sinyaller aynı model içinde birleştirilmesi, Hepsijet’in heterojen ağ yapısıyla doğrudan örtüşmektedir.
+[68] Eğitim ve Doğrulama
+[69] Model walk-forward cross-validation ile eğitilir: geçmiş verinin %70’i eğitim, %15’i doğrulama, %15’i test kümesi olarak ayrılarak modelin “gele-ceği görmemesi” garanti altına alınır. Birincil izleme metriği olarak kapasite sapması (tahmin ile gerçek desi farkı) benimsenmektedir; bu sapma doğrudan spot araç maliyetine dönüştüğünden MAPE ve RMSE’ye kıyasla operasyonel açıdan daha anlamlıdır.
+[70] Bölüm 1’de aktarılan SPO çerçevesi (Elmachtoub & Grigas, 2022) doğrultusunda, ilerleyen fazlarda tahmin modelinin kayıp fonksiyonu optimizasyon katmanının ürettdiği gerçek operasyonel maliyetle güncellenecektir. Bu sayede “dogru tahmin eden ama pahalı plan üreten” modellerin önüne geçilmektedir.
+[71] 3.2 Optimizasyon Boyutu — Üç Aşamalı Hiyerarşik Mimari
+[72] Tahmin katmanından gelen rota bazlı desi tahminleri, üç aşamalı bir hiyerarşik optimizasyon mimarisine beslenir.
+[73] Aşama 1 — MILP ile Kiralık Araç Ataması
+[74] Sabit maliyeti ödenmiş kiralık araçların rotalara optimal atanması için Karma Tam Sayılı Doğrusal Programlama (MILP) modeli çözülür. Bölüm 2’de tanımlanan talep karşılama, araç kapasitesi, TM yanaşma ve günlük elleçleme limiti kısıtları bu modele doğrudan yerleştirilir. Çözülür olarak Python-MIP (CBC/Gurobi) kullanılır. Orta ölçekli senaryolarda (≤50 TM, ≤200 araç) dakikalar içinde global optimum ya da %1’den küçük boşlukla çözüm elde edilmesi beklenmektedir. Bu adım Koç vd. (2016)’da çerçevelenen make-or-buy dengesinin matematiksel somutlaşmasıdır.
+[75] Aşama 2 — Spot Araç Tedariki (Açgözlü + Tabu Search)
+[76] Kiralık araçlardan karşılanamayan artık talep için açgözlü bir ön-sıralama uygulanır: artık desi büyükten küçüğe sıralanır ve her rota için birim maliyeti en düşük uygun spot araç tipi seçilir; gerektiğinde Tabu Search ile yerel iyileştirme yapılır. Karmaşık meta-sezgiseller yerine kasitlı olarak yorumlanabilir bir akış benimsendi; operasyon planlamacısının “ned-en bu araç seçildi?” sorusunu anlık yanıtlayabilmesi, kullanılabilirlik ilkesinin doğal gereğidir.
+[77] Aşama 3 — Kayan Ufuk (Rolling Horizon) ile Gün İçi Yeniden Optimizasyon
+[78] Pillac vd. (2013)’ün dinamik rotalama çerçevesi esas alınarak, gün içi sipariş güncellemeleri belirli zaman dilimlerinde (her 2 saatte bir) sisteme beslenir; yalnızca heniz yola çıkmamış araçların atamaları yeniden optimize edilir. Bu mekanizma reaktif spot araç çağırmak yerine proaktif kapasite rezervasyonunu mümkün kılarak toplam operasyonel maliyeti düşürür.
+[79] Konsolidasyon (CSND Motoru)
+[80] Crainic (2000)’in CSND çerçevesi doğrultusunda, bazı yük paketleri ara TM üzerinden konsolide edilerek gönderilebilir. Bir ara TM kullanımının elleçleme maliyet artışını araç doluluk tasarrufunun karşılayıp karşılamadığı her senaryo için dinamik olarak hesaplanır; bu denge MILP modelinin amaç fonksiyonuna doğrudan dahil edilmiştir.
+[81] 3.3 Teknoloji Yığını (Tech Stack)
+[82] Sistemin tüm katmanlarında kullanılacak programlama dili, kütüphane ve araçlar aşağıdaki tabloda özetlenmektedir:
+[83] Katman
+[84] Bileşen
+[85] Kütüphane / Araç
+[86] Veri
+[87] Veri İşleme & Özellik Müh.
+[88] pandas, NumPy
+[89] Veri
+[90] Veri Depolama (Geliştirme)
+[91] SQLite
+[92] Veri
+[93] Veri Depolama (Üretim)
+[94] PostgreSQL
+[95] Veri
+[96] Anlık Sipariş Akışı
+[97] Apache Kafka / REST API
+[98] ML
+[99] Temel Tahmin Modeli
+[100] LightGBM (scikit-learn arayüzü)
+[101] ML
+[102] İleri Düzey Tahmin Modeli
+[103] PyTorch + pytorch-forecasting (TFT)
+[104] Optimizasyon
+[105] MILP Çekirdek
+[106] Python-MIP (CBC; isteğe bağlı Gurobi)
+[107] Optimizasyon
+[108] Spot / Yerel Arama
+[109] PuLP + özel Tabu Search impl.
+[110] Servis
+[111] API Katmanı
+[112] FastAPI (REST endpoint, JSON/CSV)
+[113] Servis
+[114] Dashboard & UI
+[115] Streamlit (canlı doluluk, yönetici panel)
+[116] Not: Sistem mimarisini gösteren dört katmanlı akış şeması (Veri → Tahmin → Optimizasyon → Çıktı & API) rapor eklerinde sunulmuştur.
+[117] Bölüm 4: Çözümün Üstünlüğü ve Ölçeklenebilirlik
+[118] Önerdiğimiz mimari, geleneksel reaktif planlama sistemlerinin aksine “Predict, then Optimize” (Tahmin Et, Sonra Optimize Et) felsefesine dayanmakta; bunu da Elmachtoub & Grigas (2022)’nin SPO çerçevesiyle ilerleyen fazlarda uçtan uca entegrasyon hedefiyle pekiştirmektedir.
+[119] 4.1 Entegre Mimarinin Temel Avantajları
+[120] Proaktif Kapasite Yönetimi
+[121] Klasik optimizasyon modelleri yalnızca anlık veriyle çalışır; talep dalgalanmalarına her zaman reaktif biçimde yanıt verir. Mimarimizde LightGBM modeli geçmiş desi serileri ve takvim değişkenlerini (tatil, kampanya) kullanarak kısa vadeli talebi tahmin eder. Daha kritik olarak, TFT 3–5 günlük bir ufku eş zamanlı modelleyerek spot araç rezervasyonlarının birkaç gün öncesinden proaktif biçimde yapılmasını sağlar. Bu sayede operasyonun en büyük maliyet kalemi olan “acil spot araç ihtiyacı” krizleri oluşmadan kiralık araç filosu verimli biçimde konumlandırılır.
+[122] Yorumlanabilirlik ve Operasyonel Güven
+[123] TFT’nin attention mekanizması, tahmin kararını “kara kutu” olmaktan çıkarır; operasyon müdürü hangi geçmiş güne veya özelliğe ağırlık verildiğini görselleştirerek modelin çıktısını denetleyebilir. Benzer şekilde Aşama 2’deki açgözlü + Tabu Search akışında planlamacının “neden bu araç seçildi?” sorusunu anlık yanıtlayabilmesi, çözümün sahada benimsenmesini kolaylaştıran kritik bir tasarım tercihidir.
+[124] Maliyet ve Verimlilik Dengesi
+[125] Kiralık araçların sabit maliyetli olması, bu araçların mümkün olan en yüksek dolulukla çalıştırılmasını zorunlu kılar. Bölüm 2’de formüle edilen amaç fonksiyonu bu dengeyi matematiksel olarak ifade eder: MILP aşaması kiralık araç kullanım oranını (öncelikli olarak) maksimize ederken, spot araçlar yalnızca kapasite aşım noktalarında ve minimum maliyetle devreye alınır. Bu yapı Koç vd. (2016)’nın make-or-buy dengesinin doğrudan operasyonel somutlaşmasıdır.
+[126] Operasyonel Sadakat
+[127] “Tır yanaşamaz” kısıtı, TM elleçleme limitleri ve araç–yol uyumu gibi fiziksel kısıtlar modelimizde kesin kısıt (hard constraint) olarak tanımlanmıştır. Bu, üretilen planların yalnızca kâğıt üzerinde değil, sahada eksiksiz uygulanabilir olmasını garanti eder. Teorik optimallik ile uygulanabilirlik arasındaki bu denge, değerlendirme kriterlerinde öne çıkan “gerçek operasyon koşullarında sürdsürlebilirlik” ilkesiyle doğrudan örtüşmektedir.
+[128] Gün İçi Esneklik
+[129] Pillac vd. (2013)’ün dinamik rotalama çerçevesinden ilham alınan kayan ufuk (rolling horizon) mekanizması, gün içi sipariş güncellemelerinin her iki saatte bir sisteme besle-nerek heniz yola çıkmamış araçların atamalarının yeniden optimize edilmesini sağlar. Bu mekanizma, ani talep artışlarında mevcut planın minimum bozulmayla güncellenmesini mümkün kılar.
+[130] 4.2 Neden Bu Mimariyi Tercih Ettik?
+[131] Saf sezgisel (heuristic) yöntemler hızlı sonuç verse de genellikle yerel optimumda kalarak maliyetleri gereksiz yere artırır. Öte yandan saf ML tabanlı yaklaşımlar, lojistiğin katı fiziksel kısıtlarını (araç kapasitesi, TM yanaşma, elleçleme limiti) doğrudan modelleyemez; tahmin doğruluğu yüksek olsa bile operasyonel açıdan geçersiz planlar üretebilir. Tercih ettiğimiz hiyerarşik MILP + Tabu Search + TFT mimarisi bu iki uç arasında biliçli bir denge kurar: belirsizliği (talep dalgalanması) ML katmanıyla yönetir, matematiksel kesinliği (küresel optimum arayışı) MILP katmanıyla güvence altına alır ve meta-sezgisel iyileştirmeyle çözüm kalitesini korurken hesaplama süresini operasyonel sınırlar içinde tutar.
+[132] Uzun vadede Elmachtoub & Grigas (2022)’nin SPO çerçevesi bu iki katmanı birleştirerek tahmin modelinin kayıp fonksiyonunu doğrudan operasyonel maliyetle güncelleyecektir. Bu entegrasyon, “doğru tahmin eden ama pahalı plan üreten” modellerin sistematik olarak elenmesini sağlayarak mimarinin zaman içinde kendi kendini iyileştirmesine olanak tanıyacaktır.
+[133] 4.3 Ölçeklenebilirlik ve Performans Beklentisi
+[134] Türkiye genelindeki yüzlerce transfer merkezi ve binlerce araçtan oluşan veri seti, hesaplama karmaşıklığı (NP-Zor) yüksek bir problemdir. Mimarimiz bu yükü aşağıdaki tekniklerle yönetir:
+[135] Bölge Tabanlı Ayrıştırma (Decomposition)
+[136] Tüm ağ tek bir monolitik problem olarak çözülmek yerine lojistik havzalara (Marmara, İç Anadolu, Ege vb.) ayrılır ve her havuz paralel süreçlerde bağımsız olarak çözülür. Havuzlar arası yük akışı ise üsü düzey bir koordinasyon katmanında modellenir. Bu yaklaşım, problem boyutu büyüdükçe çözüm süresinin orantısız biçimde artmasının önüne geçer.
+[137] Algoritmik Verimlilik
+[138] Orta ölçekli senaryolarda (≤50 TM, ≤200 araç) Python-MIP kütüphanesi aracılığıyla çağrılan CBC veya Gurobi çözücüsünün dakikalar içinde global optimum ya da %1’den küçük optimallik boşluğuyla çözüm üretmesi beklenmektedir. Büyük ölçekli senaryolarda ise MILP’in ön-çözüm süresi sabit tutularak Tabu Search meta-sezgiseli devreden çıkarılmadan arama uzayı daralma teknikleriyle (column generation, Lagrangian relaxation) yönetilecektir.
+[139] Kademeli Genişleme
+[140] Sistem, Faz 1’de sınırlı bir TM ve araç kümesiyle (MVP) başlayıp Faz 2’de konsolidasyon ve rolling horizon mekanizmaları eklenerek büyüyecek şekilde tasar-lanmıştır. Bu kademeli yaklaşım hem teknik riskleri azaltır hem de her aşamada ölçeklenebilirlik sınırlarının gerçek veriyle test edilmesine imkân tanır.
+[141] İzlenebilirlik ve Sürekli İyileştirme
+[142] Her optimizasyon döngüsünde üretilen planlar, gerçekleşen operasyon verileriyle karşılaştırılarak kapasite sapması (tahmin–gerçek desi farkı) izlenir. Bu metrik doğrudan spot araç maliyetine dönüştüğünden MAPE veya RMSE’ye kıyasla operasyonel açıdan çok daha anlamlıdır ve modelin zaman içinde güncellenmesi için net bir geri bildirim döngüsü sağlar.
+[143] Mimarinin Özeti
+[144] LightGBM + TFT (tahmin) → MILP (kiralık araç ataması) → Tabu Search (spot tedariki) → Rolling Horizon (gün içi) → FastAPI / Streamlit (servis & görselleştirme)
+[145] Bu hiyerarşik yapı, talep belirsizliğini ML katmanıyla yönetirken fiziksel kısıtları kesin kısıt olarak modele gömerek hem teorik optimallik hem de sahada uygulanabilirlik güvencesi sunar.

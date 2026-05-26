@@ -1,0 +1,766 @@
+import argparse
+import csv
+import math
+import os
+import unicodedata
+import zipfile
+import xml.etree.ElementTree as ET
+from collections import defaultdict
+from dataclasses import dataclass
+
+
+WORKSPACE = os.path.dirname(os.path.abspath(__file__))
+
+
+def clean_text(value):
+    if value is None:
+        return ""
+    if isinstance(value, str):
+        return unicodedata.normalize("NFC", value).strip()
+    return value
+
+
+def to_float(value, default=0.0):
+    if value in (None, ""):
+        return default
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def to_int(value, default=0):
+    return int(round(to_float(value, default)))
+
+
+def excel_serial_to_iso(serial):
+    # Excel's 1900 date system. 25569 is 1970-01-01.
+    try:
+        serial = int(float(serial))
+    except (TypeError, ValueError):
+        return str(serial)
+    from datetime import date, timedelta
+
+    return (date(1970, 1, 1) + timedelta(days=serial - 25569)).isoformat()
+
+
+def read_xlsx(path):
+    # Excel dosyalari aslinda ZIP icinde XML dosyalarindan olusur.
+    # Harici kutuphane kurmadan calissin diye xlsx okumasini burada kendimiz yapiyoruz.
+    ns = {"m": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
+    with zipfile.ZipFile(path) as archive:
+        shared_strings = []
+        if "xl/sharedStrings.xml" in archive.namelist():
+            root = ET.fromstring(archive.read("xl/sharedStrings.xml"))
+            for item in root.findall(".//m:si", ns):
+                texts = [node.text or "" for node in item.findall(".//m:t", ns)]
+                shared_strings.append(clean_text("".join(texts)))
+
+        workbook = ET.fromstring(archive.read("xl/workbook.xml"))
+        sheet_names = [
+            clean_text(sheet.attrib.get("name"))
+            for sheet in workbook.findall(".//m:sheet", ns)
+        ]
+
+        sheets = {}
+        for index, sheet_name in enumerate(sheet_names, start=1):
+            sheet_path = f"xl/worksheets/sheet{index}.xml"
+            if sheet_path not in archive.namelist():
+                continue
+
+            sheet = ET.fromstring(archive.read(sheet_path))
+            rows_by_index = {}
+            max_col = 0
+            for row in sheet.findall(".//m:sheetData/m:row", ns):
+                row_index = int(row.attrib["r"])
+                values = {}
+                for cell in row.findall("m:c", ns):
+                    ref = cell.attrib.get("r", "")
+                    col_letters = "".join(ch for ch in ref if ch.isalpha())
+                    col_index = 0
+                    for ch in col_letters:
+                        col_index = col_index * 26 + (ord(ch.upper()) - 64)
+                    max_col = max(max_col, col_index)
+
+                    value_node = cell.find("m:v", ns)
+                    value = None
+                    if value_node is not None and value_node.text is not None:
+                        value = value_node.text
+                        if cell.attrib.get("t") == "s":
+                            value = shared_strings[int(value)]
+                        elif cell.attrib.get("t") == "b":
+                            value = value == "1"
+                    values[col_index] = clean_text(value)
+                rows_by_index[row_index] = values
+
+            if not rows_by_index:
+                sheets[sheet_name] = []
+                continue
+
+            max_row = max(rows_by_index)
+            matrix = []
+            for row_index in range(1, max_row + 1):
+                row = rows_by_index.get(row_index, {})
+                matrix.append([row.get(col_index) for col_index in range(1, max_col + 1)])
+            sheets[sheet_name] = matrix
+    return sheets
+
+
+def table_from_first_sheet(path):
+    sheets = read_xlsx(path)
+    rows = next(iter(sheets.values()))
+    headers = [clean_text(header) for header in rows[0]]
+    records = []
+    for row in rows[1:]:
+        if not any(cell not in (None, "") for cell in row):
+            continue
+        records.append({headers[i]: clean_text(row[i]) if i < len(row) else "" for i in range(len(headers))})
+    return records
+
+
+@dataclass(frozen=True)
+class VehicleType:
+    name: str
+    capacity: float
+    rental_daily_cost: float
+    rental_km_cost: float
+    spot_daily_cost: float
+    spot_km_cost: float
+
+
+@dataclass
+class Assignment:
+    date: str
+    shipment_origin: str
+    shipment_destination: str
+    transfer_center: str
+    leg_no: int
+    origin: str
+    destination: str
+    vehicle_type: str
+    source: str
+    vehicle_count: int
+    loaded_desi: float
+    capacity_desi: float
+    distance_km: float
+    cost_tl: float
+
+    @property
+    def utilization(self):
+        if self.capacity_desi <= 0:
+            return 0.0
+        return self.loaded_desi / self.capacity_desi
+
+
+@dataclass
+class FlowDecision:
+    date: str
+    origin: str
+    destination: str
+    demand_desi: float
+    path: tuple
+    estimated_cost_tl: float
+
+    @property
+    def transfer_center(self):
+        return self.path[1] if len(self.path) == 3 else ""
+
+
+def load_vehicle_types(path):
+    records = table_from_first_sheet(path)
+    vehicles = []
+    for record in records:
+        vehicles.append(
+            VehicleType(
+                name=clean_text(record["Araç Adı"]),
+                capacity=to_float(record["Kapasite (desi)"]),
+                rental_daily_cost=to_float(record["Kiralık Araç Günlük Kira (TL)"]),
+                rental_km_cost=to_float(record["Kiralık Araç Kilometre Başına Maliyet (TL)"]),
+                spot_daily_cost=to_float(record["Spot Araç Sabit Günlük Maliyet (TL)"]),
+                spot_km_cost=to_float(record["Spot Kilometre Başına Maliyet (TL)"]),
+            )
+        )
+    return sorted(vehicles, key=lambda vehicle: vehicle.capacity, reverse=True)
+
+
+def load_coordinates(path):
+    records = table_from_first_sheet(path)
+    coordinates = {}
+    for record in records:
+        coordinates[clean_text(record["Transfer Merkezi"])] = (
+            to_float(record["Enlem"]),
+            to_float(record["Boylam"]),
+        )
+    return coordinates
+
+
+def load_rental_inventory(path):
+    records = table_from_first_sheet(path)
+    inventory = defaultdict(lambda: defaultdict(int))
+    for record in records:
+        key = (
+            clean_text(record["Çıkış Transfer Merkezi"]),
+            clean_text(record["Varış Transfer Merkezi"]),
+        )
+        inventory[key][clean_text(record["Araç Türü"])] += to_int(record["Araç sayısı"])
+    return inventory
+
+
+def load_demands(path, selected_date=None):
+    # Talep dosyasini gun + cikis + varis bazinda topluyoruz.
+    # Tarih verilmezse model veri setindeki en guncel gunu planlar.
+    records = table_from_first_sheet(path)
+    demand_by_date_route = defaultdict(float)
+    for record in records:
+        date_value = excel_serial_to_iso(record["Tarih"])
+        if selected_date and selected_date != date_value:
+            continue
+        key = (
+            date_value,
+            clean_text(record["Çıkış Transfer Merkezi"]),
+            clean_text(record["Varış Transfer Merkezi"]),
+        )
+        demand_by_date_route[key] += to_float(record["Toplam Desi"])
+
+    if selected_date:
+        return demand_by_date_route
+
+    latest_date = max((date for date, _, _ in demand_by_date_route), default=None)
+    if latest_date is None:
+        return {}
+    return {
+        key: value
+        for key, value in demand_by_date_route.items()
+        if key[0] == latest_date
+    }
+
+
+def haversine_km(point_a, point_b):
+    lat1, lon1 = point_a
+    lat2, lon2 = point_b
+    radius = 6371.0
+    d_lat = math.radians(lat2 - lat1)
+    d_lon = math.radians(lon2 - lon1)
+    a = (
+        math.sin(d_lat / 2) ** 2
+        + math.cos(math.radians(lat1))
+        * math.cos(math.radians(lat2))
+        * math.sin(d_lon / 2) ** 2
+    )
+    return 2 * radius * math.asin(math.sqrt(a))
+
+
+def route_distance(origin, destination, coordinates, road_factor):
+    # Elimizde karayolu mesafe matrisi olmadigi icin MVP'de koordinatlardan
+    # kus ucusu mesafeyi hesaplayip karayolu yaklasim katsayisi ile carpariz.
+    if origin not in coordinates or destination not in coordinates:
+        return 0.0
+    return haversine_km(coordinates[origin], coordinates[destination]) * road_factor
+
+
+def vehicle_trip_cost(vehicle, source, distance_km):
+    if source == "kiralik":
+        return vehicle.rental_daily_cost + vehicle.rental_km_cost * distance_km
+    return vehicle.spot_daily_cost + vehicle.spot_km_cost * distance_km
+
+
+def copy_inventory(inventory):
+    copied = defaultdict(lambda: defaultdict(int))
+    for route, vehicles in inventory.items():
+        for vehicle_name, count in vehicles.items():
+            copied[route][vehicle_name] = count
+    return copied
+
+
+def choose_spot_combo(remaining_desi, vehicles, distance_km):
+    # Kiralik araclar yetmediginde kalan desiyi spot araclarla kapatiyoruz.
+    # Burada kucuk bir tam sayili arama var: tum arac kombinasyonlarini deneyip
+    # kapasiteyi asmayacak sekilde en dusuk maliyetli kombinasyonu seciyor.
+    if remaining_desi <= 0:
+        return []
+
+    min_capacity = min(vehicle.capacity for vehicle in vehicles)
+    max_total_count = int(math.ceil(remaining_desi / min_capacity)) + 3
+    best = None
+
+    def search(index, counts, capacity, cost):
+        nonlocal best
+        if best is not None and cost > best["cost"]:
+            return
+        if index == len(vehicles):
+            if capacity >= remaining_desi:
+                excess = capacity - remaining_desi
+                total_count = sum(counts)
+                candidate = {
+                    "counts": tuple(counts),
+                    "capacity": capacity,
+                    "cost": cost,
+                    "excess": excess,
+                    "total_count": total_count,
+                }
+                if best is None:
+                    best = candidate
+                else:
+                    key = (candidate["cost"], candidate["excess"], candidate["total_count"])
+                    best_key = (best["cost"], best["excess"], best["total_count"])
+                    if key < best_key:
+                        best = candidate
+            return
+
+        vehicle = vehicles[index]
+        if sum(counts) >= max_total_count:
+            return
+
+        max_count = max_total_count - sum(counts)
+        if index == len(vehicles) - 1:
+            needed = max(0, math.ceil((remaining_desi - capacity) / vehicle.capacity))
+            count_options = [needed] if needed <= max_count else []
+        else:
+            count_options = range(max_count + 1)
+
+        unit_cost = vehicle_trip_cost(vehicle, "spot", distance_km)
+        for count in count_options:
+            counts.append(count)
+            search(
+                index + 1,
+                counts,
+                capacity + count * vehicle.capacity,
+                cost + count * unit_cost,
+            )
+            counts.pop()
+
+    search(0, [], 0.0, 0.0)
+    if best is None:
+        return []
+    return [
+        (vehicles[index], count)
+        for index, count in enumerate(best["counts"])
+        if count > 0
+    ]
+
+
+def plan_leg(
+    date_value,
+    shipment_origin,
+    shipment_destination,
+    transfer_center,
+    leg_no,
+    leg_origin,
+    leg_destination,
+    demand,
+    vehicle_types,
+    vehicle_by_name,
+    rentals,
+    coordinates,
+    road_factor,
+    mutate_inventory=True,
+):
+    # Bir "bacak" fiziksel tasima hattidir: Kocaeli -> Manisa gibi.
+    # Once bu hatta tanimli kiralik araclari kullanir, kalan yuk varsa spot arac ekler.
+    # mutate_inventory=True iken kullanilan kiralik arac envanterden dusulur;
+    # boylece ayni arac gun icinde iki farkli hatta tekrar kullanilmaz.
+    remaining = demand
+    distance_km = route_distance(leg_origin, leg_destination, coordinates, road_factor)
+    assignments = []
+
+    for vehicle_name, count in sorted(
+        rentals[(leg_origin, leg_destination)].items(),
+        key=lambda item: vehicle_by_name[item[0]].capacity,
+        reverse=True,
+    ):
+        if remaining <= 0:
+            break
+        if count <= 0:
+            continue
+        vehicle = vehicle_by_name[vehicle_name]
+        used_count = min(count, math.ceil(remaining / vehicle.capacity))
+        loaded = min(remaining, used_count * vehicle.capacity)
+        capacity = used_count * vehicle.capacity
+        cost = used_count * vehicle_trip_cost(vehicle, "kiralik", distance_km)
+        assignments.append(
+            Assignment(
+                date=date_value,
+                shipment_origin=shipment_origin,
+                shipment_destination=shipment_destination,
+                transfer_center=transfer_center,
+                leg_no=leg_no,
+                origin=leg_origin,
+                destination=leg_destination,
+                vehicle_type=vehicle.name,
+                source="kiralik",
+                vehicle_count=used_count,
+                loaded_desi=loaded,
+                capacity_desi=capacity,
+                distance_km=distance_km,
+                cost_tl=cost,
+            )
+        )
+        remaining -= loaded
+        if mutate_inventory:
+            rentals[(leg_origin, leg_destination)][vehicle_name] -= used_count
+
+    for vehicle, count in choose_spot_combo(remaining, vehicle_types, distance_km):
+        loaded = min(remaining, count * vehicle.capacity)
+        capacity = count * vehicle.capacity
+        cost = count * vehicle_trip_cost(vehicle, "spot", distance_km)
+        assignments.append(
+            Assignment(
+                date=date_value,
+                shipment_origin=shipment_origin,
+                shipment_destination=shipment_destination,
+                transfer_center=transfer_center,
+                leg_no=leg_no,
+                origin=leg_origin,
+                destination=leg_destination,
+                vehicle_type=vehicle.name,
+                source="spot",
+                vehicle_count=count,
+                loaded_desi=loaded,
+                capacity_desi=capacity,
+                distance_km=distance_km,
+                cost_tl=cost,
+            )
+        )
+        remaining -= loaded
+
+    return assignments, max(0.0, remaining)
+
+
+def estimate_path_cost(path, demand, vehicle_types, vehicle_by_name, rentals, coordinates, road_factor):
+    # Bir yuk icin secilecek yolun tahmini maliyetini hesaplar.
+    # Yol dogrudan olabilir: A -> B
+    # Ya da tek aktarmali olabilir: A -> C -> B
+    simulated_rentals = copy_inventory(rentals)
+    total_cost = 0.0
+    for leg_no, (leg_origin, leg_destination) in enumerate(zip(path, path[1:]), start=1):
+        assignments, remaining = plan_leg(
+            date_value="estimate",
+            shipment_origin=path[0],
+            shipment_destination=path[-1],
+            transfer_center=path[1] if len(path) == 3 else "",
+            leg_no=leg_no,
+            leg_origin=leg_origin,
+            leg_destination=leg_destination,
+            demand=demand,
+            vehicle_types=vehicle_types,
+            vehicle_by_name=vehicle_by_name,
+            rentals=simulated_rentals,
+            coordinates=coordinates,
+            road_factor=road_factor,
+            mutate_inventory=True,
+        )
+        if remaining > 0.01:
+            return math.inf
+        total_cost += sum(item.cost_tl for item in assignments)
+    return total_cost
+
+
+def choose_flow_paths(demands, vehicle_types, vehicle_by_name, rentals, coordinates, road_factor, allow_consolidation):
+    # Konsolidasyon karari burada verilir.
+    # Baslangicta tum yukler dogrudan tasinir. Sonra her yuk icin tek tek
+    # olasi aktarma merkezleri denenir. Eger toplam gunluk maliyeti dusuruyorsa
+    # o yuk aktarmali yola alinir. Bu greedy iyilestirme maliyet azalmayana kadar surer.
+    flow_decisions = [
+        FlowDecision(
+            date=date_value,
+            origin=origin,
+            destination=destination,
+            demand_desi=demand,
+            path=(origin, destination),
+            estimated_cost_tl=0.0,
+        )
+        for (date_value, origin, destination), demand in sorted(
+            demands.items(),
+            key=lambda item: item[1],
+            reverse=True,
+        )
+    ]
+
+    if not allow_consolidation:
+        return flow_decisions
+
+    transfer_centers = sorted(coordinates)
+    current_cost = total_cost_for_flows(
+        flow_decisions,
+        vehicle_types,
+        vehicle_by_name,
+        rentals,
+        coordinates,
+        road_factor,
+    )
+
+    improved = True
+    while improved:
+        improved = False
+        for index, flow in enumerate(flow_decisions):
+            candidate_paths = [(flow.origin, flow.destination)]
+            for center in transfer_centers:
+                if center not in (flow.origin, flow.destination):
+                    candidate_paths.append((flow.origin, center, flow.destination))
+
+            best_flow = flow
+            best_cost = current_cost
+            for path in candidate_paths:
+                if path == flow.path or any(path_part not in coordinates for path_part in path):
+                    continue
+                candidate_flow = FlowDecision(
+                    date=flow.date,
+                    origin=flow.origin,
+                    destination=flow.destination,
+                    demand_desi=flow.demand_desi,
+                    path=path,
+                    estimated_cost_tl=0.0,
+                )
+                candidate_flows = list(flow_decisions)
+                candidate_flows[index] = candidate_flow
+                candidate_cost = total_cost_for_flows(
+                    candidate_flows,
+                    vehicle_types,
+                    vehicle_by_name,
+                    rentals,
+                    coordinates,
+                    road_factor,
+                )
+                if candidate_cost + 0.01 < best_cost:
+                    best_cost = candidate_cost
+                    best_flow = candidate_flow
+
+            if best_flow.path != flow.path:
+                flow_decisions[index] = best_flow
+                current_cost = best_cost
+                improved = True
+
+    return flow_decisions
+
+
+def build_assignments_for_flows(flow_decisions, vehicle_types, vehicle_by_name, base_rentals, coordinates, road_factor):
+    # Secilen yuk akislarini fiziksel arac planina cevirir.
+    # Ornegin birden fazla yuk Kocaeli -> Manisa bacagini kullaniyorsa,
+    # bunlar tek hatta birlestirilir ve araclar toplam desiye gore planlanir.
+    leg_loads = defaultdict(float)
+    leg_flows = defaultdict(list)
+    for flow in flow_decisions:
+        for leg_origin, leg_destination in zip(flow.path, flow.path[1:]):
+            leg_key = (flow.date, leg_origin, leg_destination)
+            leg_loads[leg_key] += flow.demand_desi
+            leg_flows[leg_key].append(flow)
+
+    rentals = copy_inventory(base_rentals)
+    assignments = []
+    unmet_routes = []
+
+    for (date_value, leg_origin, leg_destination), demand in sorted(leg_loads.items()):
+        flows = leg_flows[(date_value, leg_origin, leg_destination)]
+        origins = sorted({flow.origin for flow in flows})
+        destinations = sorted({flow.destination for flow in flows})
+        transfers = sorted({flow.transfer_center for flow in flows if flow.transfer_center})
+        leg_numbers = []
+        for flow in flows:
+            for index, pair in enumerate(zip(flow.path, flow.path[1:]), start=1):
+                if pair == (leg_origin, leg_destination):
+                    leg_numbers.append(index)
+
+        shipment_origin = origins[0] if len(origins) == 1 else "Karma"
+        shipment_destination = destinations[0] if len(destinations) == 1 else "Karma"
+        transfer_center = transfers[0] if len(transfers) == 1 else ("Karma" if transfers else "")
+        leg_no = leg_numbers[0] if len(set(leg_numbers)) == 1 else 0
+
+        leg_assignments, remaining = plan_leg(
+            date_value=date_value,
+            shipment_origin=shipment_origin,
+            shipment_destination=shipment_destination,
+            transfer_center=transfer_center,
+            leg_no=leg_no,
+            leg_origin=leg_origin,
+            leg_destination=leg_destination,
+            demand=demand,
+            vehicle_types=vehicle_types,
+            vehicle_by_name=vehicle_by_name,
+            rentals=rentals,
+            coordinates=coordinates,
+            road_factor=road_factor,
+            mutate_inventory=True,
+        )
+        assignments.extend(leg_assignments)
+        if remaining > 0.01:
+            unmet_routes.append((date_value, leg_origin, leg_destination, remaining))
+
+    return assignments, unmet_routes
+
+
+def total_cost_for_flows(flow_decisions, vehicle_types, vehicle_by_name, base_rentals, coordinates, road_factor):
+    assignments, unmet_routes = build_assignments_for_flows(
+        flow_decisions,
+        vehicle_types,
+        vehicle_by_name,
+        base_rentals,
+        coordinates,
+        road_factor,
+    )
+    if unmet_routes:
+        return math.inf
+    return sum(item.cost_tl for item in assignments)
+
+
+def optimize(selected_date=None, road_factor=1.25, allow_consolidation=True):
+    # Ana is akisi:
+    # 1. Excel verilerini oku.
+    # 2. Yuklerin dogrudan/aktarmali yollarini sec.
+    # 3. Secilen akislari arac planina donustur.
+    # 4. CSV ciktilarini uretmek icin sonucu dondur.
+    vehicle_types = load_vehicle_types(os.path.join(WORKSPACE, "Araç_Kapasite_Maliyet.xlsx"))
+    coordinates = load_coordinates(os.path.join(WORKSPACE, "Koordinatlar.xlsx"))
+    base_rentals = load_rental_inventory(os.path.join(WORKSPACE, "Kiralık_Araçlar.xlsx"))
+    demands = load_demands(os.path.join(WORKSPACE, "Desi_talep.xlsx"), selected_date)
+    vehicle_by_name = {vehicle.name: vehicle for vehicle in vehicle_types}
+
+    flow_decisions = choose_flow_paths(
+        demands,
+        vehicle_types,
+        vehicle_by_name,
+        base_rentals,
+        coordinates,
+        road_factor,
+        allow_consolidation,
+    )
+    for flow in flow_decisions:
+        flow.estimated_cost_tl = estimate_path_cost(
+            flow.path,
+            flow.demand_desi,
+            vehicle_types,
+            vehicle_by_name,
+            base_rentals,
+            coordinates,
+            road_factor,
+        )
+
+    assignments, unmet_routes = build_assignments_for_flows(
+        flow_decisions,
+        vehicle_types,
+        vehicle_by_name,
+        base_rentals,
+        coordinates,
+        road_factor,
+    )
+
+    return assignments, unmet_routes, flow_decisions
+
+
+def write_plan(assignments, output_path):
+    fieldnames = [
+        "tarih",
+        "orijinal_cikis_tm",
+        "orijinal_varis_tm",
+        "aktarma_tm",
+        "bacak_no",
+        "cikis_tm",
+        "varis_tm",
+        "arac_turu",
+        "kaynak",
+        "arac_sayisi",
+        "yuklenen_desi",
+        "kapasite_desi",
+        "doluluk_orani",
+        "mesafe_km",
+        "maliyet_tl",
+    ]
+    with open(output_path, "w", newline="", encoding="utf-8-sig") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer.writeheader()
+        for item in assignments:
+            writer.writerow(
+                {
+                    "tarih": item.date,
+                    "orijinal_cikis_tm": item.shipment_origin,
+                    "orijinal_varis_tm": item.shipment_destination,
+                    "aktarma_tm": item.transfer_center,
+                    "bacak_no": item.leg_no,
+                    "cikis_tm": item.origin,
+                    "varis_tm": item.destination,
+                    "arac_turu": item.vehicle_type,
+                    "kaynak": item.source,
+                    "arac_sayisi": item.vehicle_count,
+                    "yuklenen_desi": round(item.loaded_desi, 2),
+                    "kapasite_desi": round(item.capacity_desi, 2),
+                    "doluluk_orani": round(item.utilization, 4),
+                    "mesafe_km": round(item.distance_km, 2),
+                    "maliyet_tl": round(item.cost_tl, 2),
+                }
+            )
+
+
+def write_flow_plan(flow_decisions, output_path):
+    fieldnames = [
+        "tarih",
+        "cikis_tm",
+        "varis_tm",
+        "talep_desi",
+        "secili_yol",
+        "aktarma_tm",
+        "tahmini_yol_maliyeti_tl",
+    ]
+    with open(output_path, "w", newline="", encoding="utf-8-sig") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer.writeheader()
+        for flow in flow_decisions:
+            writer.writerow(
+                {
+                    "tarih": flow.date,
+                    "cikis_tm": flow.origin,
+                    "varis_tm": flow.destination,
+                    "talep_desi": round(flow.demand_desi, 2),
+                    "secili_yol": " -> ".join(flow.path),
+                    "aktarma_tm": flow.transfer_center,
+                    "tahmini_yol_maliyeti_tl": (
+                        "" if math.isinf(flow.estimated_cost_tl) else round(flow.estimated_cost_tl, 2)
+                    ),
+                }
+            )
+
+
+def print_summary(assignments, unmet_routes, flow_decisions):
+    total_cost = sum(item.cost_tl for item in assignments)
+    total_demand = sum(flow.demand_desi for flow in flow_decisions)
+    total_leg_loaded = sum(item.loaded_desi for item in assignments)
+    total_capacity = sum(item.capacity_desi for item in assignments)
+    rental_count = sum(item.vehicle_count for item in assignments if item.source == "kiralik")
+    spot_count = sum(item.vehicle_count for item in assignments if item.source == "spot")
+    route_count = len({(item.date, item.origin, item.destination) for item in assignments})
+    consolidated_count = sum(1 for flow in flow_decisions if flow.transfer_center)
+
+    print("OPTIMIZASYON OZETI")
+    print(f"Toplam talep desi: {total_demand:,.2f}")
+    print(f"Aktarmali tasinan OD sayisi: {consolidated_count}")
+    print(f"Planlanan rota sayisi: {route_count}")
+    print(f"Kiralik arac sayisi: {rental_count}")
+    print(f"Spot arac sayisi: {spot_count}")
+    print(f"Toplam arac-bacak yuk desi: {total_leg_loaded:,.2f}")
+    print(f"Toplam kapasite: {total_capacity:,.2f}")
+    print(f"Ortalama doluluk: {(total_leg_loaded / total_capacity if total_capacity else 0):.2%}")
+    print(f"Tahmini toplam maliyet: {total_cost:,.2f} TL")
+    print(f"Karsilanamayan rota sayisi: {len(unmet_routes)}")
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Hepsijet anahat kapasite ve maliyet optimizasyonu")
+    parser.add_argument("--date", help="Planlanacak tarih, ornek: 2025-12-01. Verilmezse en guncel tarih kullanilir.")
+    parser.add_argument("--road-factor", type=float, default=1.25, help="Kus ucusu mesafeyi karayolu mesafesine yaklastirma katsayisi.")
+    parser.add_argument("--output", default=os.path.join(WORKSPACE, "optimizasyon_plani.csv"))
+    parser.add_argument("--flow-output", default=os.path.join(WORKSPACE, "yuk_akisi_plani.csv"))
+    parser.add_argument("--no-consolidation", action="store_true", help="Ara TM secimini kapatir, tum yukleri dogrudan planlar.")
+    args = parser.parse_args()
+
+    assignments, unmet_routes, flow_decisions = optimize(
+        args.date,
+        args.road_factor,
+        allow_consolidation=not args.no_consolidation,
+    )
+    write_plan(assignments, args.output)
+    write_flow_plan(flow_decisions, args.flow_output)
+    print_summary(assignments, unmet_routes, flow_decisions)
+    print(f"Arac plani ciktisi: {args.output}")
+    print(f"Yuk akisi ciktisi: {args.flow_output}")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,11 @@
+﻿tarih,orijinal_cikis_tm,orijinal_varis_tm,aktarma_tm,bacak_no,cikis_tm,varis_tm,arac_turu,kaynak,arac_sayisi,yuklenen_desi,kapasite_desi,doluluk_orani,mesafe_km,maliyet_tl
+2026-05-10,Kocaeli,Bilecik,Eskişehir,2,Eskişehir,Bilecik,Kamyonet,spot,1,1935.72,5600.0,0.3457,77.64,6147.45
+2026-05-10,Kocaeli,Karma,Eskişehir,1,Kocaeli,Eskişehir,Kamyon,kiralik,1,2081.32,12000.0,0.1734,150.55,6505.51
+2026-05-10,Kocaeli,Karma,Manisa,1,Kocaeli,Manisa,Tır,spot,1,17864.54,22400.0,0.7975,401.42,21735.62
+2026-05-10,Kocaeli,Karma,Şanlıurfa,1,Kocaeli,Şanlıurfa,Kamyonet,spot,1,4682.22,5600.0,0.8361,1079.69,24184.48
+2026-05-10,Kocaeli,Balıkesir,Manisa,2,Manisa,Balıkesir,Kamyonet,spot,1,2912.1,5600.0,0.52,151.2,7471.54
+2026-05-10,Karma,Tekirdağ,Manisa,0,Manisa,Tekirdağ,Kamyonet,spot,1,3757.8,5600.0,0.671,328.0,10654.08
+2026-05-10,Karma,Yalova,Manisa,0,Manisa,Yalova,Kamyonet,spot,1,5156.12,5600.0,0.9207,344.05,10942.88
+2026-05-10,Karma,İstanbul,Manisa,0,Manisa,İstanbul,Kamyonet,spot,1,3247.0,5600.0,0.5798,370.98,11427.62
+2026-05-10,Kocaeli,Erzincan,Şanlıurfa,2,Şanlıurfa,Erzincan,Kamyonet,spot,1,13.7,5600.0,0.0024,368.16,11376.82
+2026-05-10,Kocaeli,Mersin,Şanlıurfa,2,Şanlıurfa,Mersin,Kamyonet,spot,1,4280.4,5600.0,0.7644,464.95,13119.17

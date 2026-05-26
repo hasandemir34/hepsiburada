@@ -1,0 +1,14 @@
+﻿tarih,cikis_tm,varis_tm,talep_desi,secili_yol,aktarma_tm,tahmini_yol_maliyeti_tl
+2026-05-10,Kocaeli,Yalova,4701.08,Kocaeli -> Manisa -> Yalova,Manisa,22918.53
+2026-05-10,Kocaeli,Mersin,4280.4,Kocaeli -> Şanlıurfa -> Mersin,Şanlıurfa,37303.64
+2026-05-10,Kocaeli,Tekirdağ,3685.2,Kocaeli -> Manisa -> Tekirdağ,Manisa,22629.73
+2026-05-10,Kocaeli,Manisa,3366.48,Kocaeli -> Manisa,,11975.65
+2026-05-10,Kocaeli,İstanbul,3199.68,Kocaeli -> Manisa -> İstanbul,Manisa,23403.27
+2026-05-10,Kocaeli,Balıkesir,2912.1,Kocaeli -> Manisa -> Balıkesir,Manisa,19447.19
+2026-05-10,Kocaeli,Bilecik,1935.72,Kocaeli -> Eskişehir -> Bilecik,Eskişehir,12652.96
+2026-05-10,Manisa,Yalova,455.04,Manisa -> Yalova,,10942.88
+2026-05-10,Kocaeli,Şanlıurfa,388.12,Kocaeli -> Şanlıurfa,,24184.48
+2026-05-10,Kocaeli,Eskişehir,145.6,Kocaeli -> Eskişehir,,6505.51
+2026-05-10,Manisa,Tekirdağ,72.6,Manisa -> Tekirdağ,,10654.08
+2026-05-10,Manisa,İstanbul,47.32,Manisa -> İstanbul,,11427.62
+2026-05-10,Kocaeli,Erzincan,13.7,Kocaeli -> Şanlıurfa -> Erzincan,Şanlıurfa,35561.3
